@@ -6,20 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('cronograma_pagos', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('lote_id')->constrained('lotes')->onDelete('cascade');
+
+            $table->string('tipo_cuota');
+            $table->date('fecha_vencimiento');
+
+            $table->integer('monto_clp_estimado');
+            $table->decimal('monto_usd_estimado', 10, 2);
+            $table->decimal('tipo_cambio_aplicado', 8, 2);
+
+            $table->string('estado')->default('Por Pagar');
+
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('cronograma_pagos');
